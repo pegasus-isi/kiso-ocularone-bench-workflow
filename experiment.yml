@@ -1,0 +1,161 @@
+name: my-first-experiment
+condor:
+  central-manager:
+    roles:
+      - central-manager
+    # Optionally, define a custom Condor configuration file
+    # config-file: config/cm-condor_config
+
+  # Optionally, define on or more execute nodes configurations
+  execute:
+    roles:
+      - execute
+    # Optionally, define a custom Condor configuration file
+    # config-file: config/exec-condor_config
+  # execute-1:
+  #   roles:
+  #     - execute-large-memory
+    # Optionally, define a custom Condor configuration file
+    # config-file: config/exec-condor_config
+
+  # Optionally, define on or more execute nodes configurations
+  submit:
+    roles:
+      - submit
+    # Optionally, define a custom Condor configuration file
+    # config-file: config/submitc-ondor_config
+  # submit-1:
+  #   roles:
+  #     - submit-large-memory
+
+  # Optionally, define on or more personal HTCondor nodes configurations
+  # personal:
+  #   roles:
+  #     - edge-1
+  # personal-1:
+  #   roles:
+  #     - edge-2
+  #   Optionally, define a custom Condor configuration file
+  #   config-file: config/personal-condor_config
+
+# Optionally, identify nodes on which Docker will run
+docker:
+  roles:
+    - execute
+
+# Optionally, identify nodes on which Apptainer will run
+apptainer:
+  roles:
+    - submit
+
+sites:
+  # Example, provisions three virtual machines using Vagrant with VirtualBox on the local machine.
+  - kind: vagrant
+    backend: virtualbox
+    box: bento/rockylinux-9
+    user: vagrant
+    config_extra: 'config.vm.synced_folder ".", "/vagrant", disabled: true'
+    resources:
+      machines:
+        - roles:
+            - execute
+          backend: virtualbox
+          box: bento/rockylinux-9
+          user: vagrant
+          flavour: "large"
+          number: 1
+        - roles:
+            - submit
+          backend: virtualbox
+          box: bento/rockylinux-9
+          user: vagrant
+          flavour: "large"
+          number: 1
+        - roles:
+            - central-manager
+          backend: virtualbox
+          box: bento/rockylinux-9
+          user: vagrant
+          flavour: "large"
+          number: 1
+      networks:
+        - roles:
+            - r1
+          cidr: "172.16.42.0/16"
+
+  # Example, provisions a container on Chameleon Edge with a Raspberry Pi 4.
+  # - kind: chameleon-edge
+  #   walltime: "04:00:00"
+  #   lease_name: edge-lease
+  #   rc_file: secrets/chi-edge-app-credopenrc.sh
+  #   resources:
+  #     machines:
+  #       - roles:
+  #           - central-manager
+  #         machine_name: raspberrypi4-64
+  #         count: 1
+  #         container:
+  #           name: execute
+  #           image: rockylinux:8
+
+  # Example, provisions a virtual machine on Chameleon TACC.
+  # - kind: chameleon
+  #   walltime: "04:00:00"
+  #   lease_name: tacc-lease
+  #   rc_file: secrets/chi-tacc-app-cred-openrc.sh
+  #   key_name: mayani-mac-mini
+  #   image: CC-Ubuntu18.04
+  #   resources:
+  #     machines:
+  #       - roles:
+  #           - submit
+  #         flavour: compute_zen3
+  #         number: 1
+  #         image: CC-Ubuntu22.04
+  #     networks:
+  #       - sharednet1
+
+experiments:
+  - kind: pegasus
+    name: process-experiment
+    # Number of time to run the experiment
+    count: 1
+    # Script to run the Pegasus workflow
+    main: bin/main.sh
+    # The node from which the workflow will be submitted
+    submit-node-roles:
+      - submit
+
+    # Optionally, specify what scripts to run and on which node to run them on to setup the environment
+    # setup:
+    #   - roles:
+    #       - submit
+    #     executable: /bin/bash
+    #     script: |
+    #       #!/bin/bash
+    #       echo "Setup script here"
+
+    # Optionally, specify input files and on which node to copy them on to setup the environment
+    # By default, the directory containing the experiment.yml file will be copied to all provisioned nodes
+    # inputs:
+    #   - roles:
+    #       - execute
+    #     src: README.md
+    #     dst: ~kiso/kiso-process-experiment
+
+    # Optionally, specify what scripts to run and on which node to run them on after the environment
+    # post-scripts:
+    #   - roles:
+    #       - submit
+    #     executable: /bin/bash
+    #     script: |
+    #       #!/bin/bash
+    #       echo "Post script here"
+
+    # Optionally, specify output files and on which node to copy them from after the experiment
+    # By default, the Pegasus workflow submit directory will be copied to the local machine
+    # outputs:
+    #   - roles:
+    #       - submit
+    #     src: ~kiso/kiso-process-experiment
+    #     dst: local-machine
