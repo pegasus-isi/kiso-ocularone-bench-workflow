@@ -1,5 +1,8 @@
 VIP navigation requires multiple DNN models for identification, posture analysis, and depth estimation to ensure safe mobility. Using a hazard vest as a unique identifier enhances visibility while selecting the right DNN model and computing device balances accuracy and real-time performance. We present Ocularone-Bench, which is a benchmark suite designed to address the lack of curated datasets for uniquely identifying individuals in crowded environments and the need for benchmarking DNN inference times on resource-constrained edge devices. The suite evaluates the accuracy-latency trade-offs of YOLO models retrained on this dataset and benchmarks inference times of situation awareness models across edge accelerators and high-end GPU workstations.
 
+> [!IMPORTANT]
+> The experiment can be run only on ARM-based machines.
+
 # Getting Started
 
 ## Prerequisites
