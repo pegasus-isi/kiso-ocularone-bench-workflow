@@ -1,4 +1,4 @@
-The Kiso repository is a template that can be used to start a new Kiso experiment project. The repository defines the directory structure, best practices, etc. to be used while developing an experiment in Kiso.
+VIP navigation requires multiple DNN models for identification, posture analysis, and depth estimation to ensure safe mobility. Using a hazard vest as a unique identifier enhances visibility while selecting the right DNN model and computing device balances accuracy and real-time performance. We present Ocularone-Bench, which is a benchmark suite designed to address the lack of curated datasets for uniquely identifying individuals in crowded environments and the need for benchmarking DNN inference times on resource-constrained edge devices. The suite evaluates the accuracy-latency trade-offs of YOLO models retrained on this dataset and benchmarks inference times of situation awareness models across edge accelerators and high-end GPU workstations.
 
 # Getting Started
 
@@ -6,22 +6,14 @@ The Kiso repository is a template that can be used to start a new Kiso experimen
 
 ```sh
 pip install kiso
-# Install the resource provider specific dependencies you want to use
 pip install kiso[vagrant]
-pip install kiso[chameleon]
 ```
-
-## Defining the experiment
-
-Define your experiments and the resources it needs in a YAML file named `experiment.yml`.
 
 ## Running the experiment
 
-Place any required credentials files in the `secrets` directory. These credentials are referenced in the experiment configuration YAML file.
+Create application credentials for CHI@TACC as tacc-app-cred-oac-edge-openrc.sh and place the files in the secrets directory.
 
-Place any required config files in the `config` directory.
-
-Place any required data files in the `data` directory.
+## Running the experiment
 
 ```sh
 # Check Kiso experiment configuration
@@ -40,28 +32,16 @@ kiso down
 # Outputs defined in the experiment configuration will be placed to the destination specified in the experiment configuration.
 ```
 
-# Versioning
-
-```sh
-pip install commitizen
-
-# Committing changes
-# Use git cz c or cz c to commit changes
-
-# Tagging a new version, updating the changelog
-cz bump
-git push --tags
-
-# Use GitHub CLI to create a new release
-# gh release create --repo <user-or-org>/<repo> <tag-name>
-```
-
 # References
 
 - [Pegasus Workflow Management System](https://pegasus.isi.edu)
 - [EnOSlib](https://discovery.gitlabpages.inria.fr/enoslib/)
 - [Chameleon Cloud](https://www.chameleoncloud.org)
 - [FABRIC](https://portal.fabric-testbed.net)
+
+# Citation
+
+[Suman Raj, Bhavani A Madhabhavi, Kautuk Astu, Arnav A Rajesh, Pratham M and Yogesh Simmhan (2025). Ocularone-Bench: Benchmarking DNN Models on GPUs to Assist the Visually Impaired. Ocularone Dataset](https://www.arxiv.org/pdf/2504.03709)
 
 # Acknowledgements
 
